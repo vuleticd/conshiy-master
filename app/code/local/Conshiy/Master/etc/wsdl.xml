@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="conshiyNetworkEntityCreate">
+                <all>
+                    <element name="url" type="xsd:string" minOccurs="0" />
+                    <element name="username" type="xsd:string" minOccurs="0" />
+                    <element name="password" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+        </schema>
+    </types>
+    <message name="conshiyNetworkCreateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="slaveData" type="typens:conshiyNetworkEntityCreate" />
+    </message>
+    <message name="conshiyNetworkCreateResponse">
+        <part name="result" type="xsd:int" />
+    </message>
+    <message name="conshiyNetworkUpdateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="slaveId" type="xsd:int" />
+        <part name="password" type="xsd:string" />
+    </message>
+    <message name="conshiyNetworkUpdateResponse">
+        <part name="info" type="xsd:boolean" />
+    </message>
+    <message name="conshiyNetworkDeleteRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="slaveId" type="xsd:int" />
+    </message>
+    <message name="conshiyNetworkDeleteResponse">
+        <part name="info" type="xsd:boolean" />
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="conshiyNetworkCreate">
+            <documentation>Register Slave website in network</documentation>
+            <input message="typens:conshiyNetworkCreateRequest" />
+            <output message="typens:conshiyNetworkCreateResponse" />
+        </operation>
+        <operation name="conshiyNetworkUpdate">
+            <documentation>Update Slave website data registered in network</documentation>
+            <input message="typens:conshiyNetworkUpdateRequest" />
+            <output message="typens:conshiyNetworkUpdateResponse" />
+        </operation>
+        <operation name="conshiyNetworkDelete">
+            <documentation>Delete Slave website registered in network</documentation>
+            <input message="typens:conshiyNetworkDeleteRequest" />
+            <output message="typens:conshiyNetworkDeleteResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="conshiyNetworkCreate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="conshiyNetworkUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="conshiyNetworkDelete">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+    <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}" />
+        </port>
+    </service>
+</definitions>

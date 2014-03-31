@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Conshiy_Master>
-            <version>0.0.0.1</version>
+            <version>0.0.0.2</version>
         </Conshiy_Master>
     </modules>
     <global>
@@ -40,6 +40,11 @@
                 </entities>
             </conshiymaster_resource>
         </models>
+        <helpers>
+            <conshiymaster>
+                <class>Conshiy_Master_Helper</class>
+            </conshiymaster>
+        </helpers>
         <resources>
             <conshiymaster_setup>
                 <setup>

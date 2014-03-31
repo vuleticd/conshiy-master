@@ -47,8 +47,13 @@ class Conshiy_Master_Model_Observer
 				$user->getData('api_key') &&
 				$user->getOrigData('api_key') != $user->getData('api_key')
 		) {
-			$new_api_password = $request->getPost('new_api_key');
+			// Encripted new password
+			$new_api_password = Mage::helper('conshiymaster')->encDec($request->getPost('new_api_key'));
 			// Loop trough network and notify each of changed password
+			$networkCollection = Mage::getModel('conshiymaster/network')->getCollection();
+			foreach ($networkCollection as $slave) {
+				
+			}
 			return;
 		}
 	}

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Conshiy
+ * @package     Conshiy_Master
+ * @copyright   Copyright (c) 2014 a356 Development (http://www.a356dev.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <api>
+        <resources>
+            <conshiy_network translate="title" module="conshiymaster">
+                <model>conshiymaster/api</model>
+                <title>Conshiy Network API</title>
+                <acl>conshiy/network</acl>
+                <methods>
+                    <create translate="title" module="conshiymaster">
+                        <title>Register Slave website in network</title>
+                    </create>
+                    <update translate="title" module="conshiymaster">
+                        <title>Update Slave website data registered in network</title>
+                    </update>
+                    <delete translate="title" module="conshiymaster">
+                        <title>Delete Slave website registered in network</title>
+                    </delete>
+                </methods>
+                <faults module="conshiymaster">
+                	<slave_not_found>
+                        <code>100</code >
+                        <message>Slave website not found in this network</message>
+                    </slave_not_found>
+                	<slave_not_registered>
+                        <code>101</code >
+                        <message>Slave website not registered in network</message>
+                    </slave_not_registered>
+                    <slave_not_deleted>
+                        <code>102</code >
+                        <message>Slave website not deleted from network. Details in error message.</message>
+                    </slave_not_deleted>
+                    <slave_not_updated>
+                        <code>103</code>
+                        <message>Slave website data not updated.</message>
+                    </slave_not_updated>
+                </faults>
+            </conshiy_network>
+        </resources>
+        <resources_alias>
+            <network>conshiy_network</network>
+        </resources_alias>
+        <v2>
+            <resources_function_prefix>
+                <network>conshiyNetwork</network>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <conshiy translate="title" module="conshiymaster">
+                    <title>Conshiy</title>
+                    <network translate="title" module="conshiymaster">
+                        <title>Network</title>
+                    </network>
+                </conshiy>
+            </resources>
+        </acl>
+    </api>
+</config>
