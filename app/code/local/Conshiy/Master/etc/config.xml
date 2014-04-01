@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Conshiy_Master>
-            <version>0.0.0.2</version>
+            <version>0.0.0.1</version>
         </Conshiy_Master>
     </modules>
     <global>
@@ -53,29 +53,5 @@
                 </setup>
             </conshiymaster_setup>
         </resources>
-        <events>
-        	<api_user_save_before>
-            	<observers>
-                	<conshiymaster_api_user_save_before>
-                        <class>conshiymaster/observer</class>
-                        <method>preventUsernameChange</method>
-                	</conshiymaster_api_user_save_before>
-            	</observers>
-          	</api_user_save_before>
-        	<api_user_save_after>
-            	<observers>
-                	<conshiymaster_api_user_save_after>
-                        <class>conshiymaster/observer</class>
-                        <method>notifyNetwork</method>
-                	</conshiymaster_api_user_save_after>
-            	</observers>
-          	</api_user_save_after>
-        </events>
     </global>
-    <conshiy>
-    	<master>
-    		<role_name>conshiySlave</role_name>
-    		<username>conshyslave</username>
-    	</master>
-    </conshiy>
 </config>

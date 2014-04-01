@@ -21,46 +21,8 @@
 $installer = $this;
 $installer->startSetup();
 
-try {
-	// create role
-	$role = Mage::getModel('api/roles');
-	$role->setName(Mage::getConfig()->getNode('conshiy/master')->role_name)
-	     ->setParentId(0)
-	     ->setRoleType(Mage_Api_Model_Acl::ROLE_TYPE_GROUP)
-	     ->save();
-	
-	Mage::getModel("api/rules")
-		->setRoleId($role->getId())
-		->setResources(array("all"))
-		->saveRel();
-		
-	// create usser	
-	$user = Mage::getModel('api/user')
-				->setData(array(
-				'username' => Mage::getConfig()->getNode('conshiy/master')->username,
-				'firstname' => 'Conshiy',
-				'lastname' => 'Slave',
-				'email' => 'slave@server.com',
-				'api_key' => 'conshypassword',
-				'api_key_confirmation' => 'conshypassword',
-				'is_active' => 1,
-				'user_roles' => '',
-				'assigned_user_role' => '',
-				'role_name' => '',
-				'roles' => array($role->getId())
-		));
-	$user->save();
-	// assign user to role
-	$user->setRoleIds(array($role->getId()))
-		->setRoleUserId($user->getUserId())
-		->saveRelations();
-		
-} catch (Exception $e) {
-	die($e->getMessage());
-}
-
 /**
- * Create table 'custom_shipping_options'
+ * Create table 'conshiy_network'
  */
 
 $table = $installer->getConnection()
@@ -76,7 +38,14 @@ $table = $installer->getConnection()
 	->addColumn('username',  Varien_Db_Ddl_Table::TYPE_TEXT, 40, array(
 		), 'Slave API username')
 	->addColumn('password', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
-		), 'Slave API password');
+		), 'Slave API password')
+	->addIndex(
+        $installer->getIdxName(
+            'conshiymaster/network',
+            array('url', 'username'),
+            Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+        ),
+        array('url', 'username'), array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE));
 
 $installer->getConnection()->createTable($table);
 
