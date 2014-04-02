@@ -46,3 +46,14 @@
 !/app/code/local/Conshiy
 /app/code/local/Conshiy/*
 !/app/code/local/Conshiy/Master
+!/app/design
+/app/design/*
+!/app/design/adminhtml
+/app/design/adminhtml/*
+!/app/design/adminhtml/default
+/app/design/adminhtml/default/*
+!/app/design/adminhtml/default/default
+/app/design/adminhtml/default/default/*
+!/app/design/adminhtml/default/default/layout
+/app/design/adminhtml/default/default/layout/*
+!/app/design/adminhtml/default/default/layout/conshiy

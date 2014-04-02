@@ -45,6 +45,11 @@
                 <class>Conshiy_Master_Helper</class>
             </conshiymaster>
         </helpers>
+        <blocks>
+			<conshiymaster>
+				<class>Conshiy_Master_Block</class>
+			</conshiymaster>
+		</blocks>
         <resources>
             <conshiymaster_setup>
                 <setup>
@@ -54,4 +59,37 @@
             </conshiymaster_setup>
         </resources>
     </global>
+    <admin>
+        <routers>
+			<conshiymaster>
+				<use>admin</use>
+				<args>
+					<module>Conshiy_Master</module>
+					<frontName>conshiy</frontName>
+				</args>
+			</conshiymaster>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<conshiy_menu>
+				<title>Conshiy</title>
+				<sort_order>100</sort_order>
+				<children>
+					<network_menu module="conshiymaster">
+						<title>Network</title>
+						<sort_order>1</sort_order>
+						<action>conshiy/adminhtml_network</action>
+					</network_menu>
+				</children>
+			</conshiy_menu>
+		</menu>
+        <layout>
+            <updates>
+                <conshiymaster>
+                    <file>conshiy/network.xml</file>
+                </conshiymaster>
+            </updates>
+        </layout>
+    </adminhtml>
 </config>
