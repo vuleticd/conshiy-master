@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Conshiy_Master>
-            <version>0.0.0.1</version>
+            <version>0.0.0.2</version>
         </Conshiy_Master>
     </modules>
     <global>
@@ -37,6 +37,9 @@
                     <network>
                         <table>conshiy_network</table>
                     </network>
+                    <queue>
+                        <table>conshiy_queue</table>
+                    </queue>
                 </entities>
             </conshiymaster_resource>
         </models>
@@ -58,6 +61,17 @@
                 </setup>
             </conshiymaster_setup>
         </resources>
+        <events>
+        	<!-- Product attributes changes queing -->
+        	<catalog_entity_attribute_save_after>
+                <observers>
+                    <conshiy_attribute_sync>
+                        <class>conshiymaster/observer_attribute</class>
+                        <method>queue</method>
+                    </conshiy_attribute_sync>
+                </observers>
+            </catalog_entity_attribute_save_after>
+        </events>
     </global>
     <admin>
         <routers>
@@ -92,4 +106,20 @@
             </updates>
         </layout>
     </adminhtml>
+    <conshiy>
+    	<enities>
+    		<catalog_product>
+    			<enabled>0</enabled>
+    			<catalog_category>
+    				<enabled>0</enabled>
+    			</catalog_category>
+    			<catalog_product_attribute_set>
+    				<enabled>0</enabled>
+    				<catalog_product_attribute>
+    					<enabled>1</enabled>	
+    				</catalog_product_attribute>
+    			</catalog_product_attribute_set>
+    		</catalog_product>		
+    	</enities>
+    </conshiy>
 </config>

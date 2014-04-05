@@ -35,6 +35,12 @@ class Conshiy_Master_Block_Adminhtml_Network_Edit_Tabs extends Mage_Adminhtml_Bl
 				'title'     => Mage::helper('conshiymaster')->__('API connection'),
 				'content'   => $this->getLayout()->createBlock('conshiymaster/adminhtml_network_edit_tab_form')->toHtml(),
 		));
+		
+		$this->addTab('entities_section', array(
+				'label'     => Mage::helper('conshiymaster')->__('Entities selection'),
+				'title'     => Mage::helper('conshiymaster')->__('Entities selection'),
+				'content'   => $this->getLayout()->createBlock('conshiymaster/adminhtml_network_edit_tab_entities')->toHtml(),
+		));
 		 
 		return parent::_beforeToHtml();
 	}

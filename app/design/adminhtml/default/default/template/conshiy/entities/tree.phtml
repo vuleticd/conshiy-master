@@ -1,0 +1,31 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Conshiy
+ * @package     Conshiy_Master
+ * @copyright   Copyright (c) 2014 a356 Development (http://www.a356dev.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('conshiymaster')->__('Available Entities') ?></h4>
+    </div>
+    <fieldset id="grop_fields">
+        <input type="hidden" name="slave_entities" id="slave_entities" value="<?php //echo $this->getIdsString() ?>">
+        <div id="tree" class="tree">
+        <?php echo print_r($this->getEntitiesCollection(), true); ?>
+        </div>
+    </fieldset>
+</div>
