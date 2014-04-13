@@ -65,6 +65,7 @@ class Conshiy_Master_Adminhtml_NetworkController extends Mage_Adminhtml_Controll
 	
 	public function saveAction() {
 		if ($data = $this->getRequest()->getPost()) {
+			//Mage::log(array_keys($data['entities']));
 			$model = Mage::getModel('conshiymaster/network');
 			$model->setData($data)
 				->setId($this->getRequest()->getParam('id'));
