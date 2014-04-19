@@ -19,5 +19,20 @@
  */
 class Conshiy_Master_Helper_Data extends Mage_Core_Helper_Abstract
 {
-
+	public function getResourcesOptionArray(){
+		$resources = array();
+		foreach(Mage::getConfig()->getNode('conshiy/enities')->children() as $ch){
+			if($ch->getName() != 'enabled' && $ch->getName() != 'label'){
+				$result = $ch->xpath('.//label');
+				foreach($result as $lab){
+					$parent = $lab->xpath('..');
+					if(( (string) $parent[0]->enabled )){
+						$resources[$parent[0]->getName()] = (string) $parent[0]->label;
+					}
+				}
+			}
+		}
+		
+		return $resources;
+	}
 }

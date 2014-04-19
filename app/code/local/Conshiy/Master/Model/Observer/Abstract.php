@@ -17,11 +17,41 @@
  * @copyright   Copyright (c) 2014 a356 Development (http://www.a356dev.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Conshiy_Master_Model_Observer_Abstract
+abstract class Conshiy_Master_Model_Observer_Abstract
 {
-
+	
+	abstract protected function getConshiyResourceCode();
+	
+	abstract protected function getMageResourceCode();
+	
+	abstract protected function getIdentifier($observer);
+	
 	
 	public function queue($observer){
-		Mage::log($observer->getEvent()->getName());
+		$network  = Mage::getModel('conshiymaster/network')->getCollection();
+		$identifier = $this->getIdentifier($observer);
+		foreach ($network as $slave){
+			if( isset($slave['resources']) &&
+					in_array($this->getConshiyResourceCode(), explode(',', $slave['resources']))){
+						
+				$model_id = Mage::getModel('conshiymaster/queue')->getUniqueQueue($this->getMageResourceCode(),
+					$identifier,
+					$slave->getId()
+				);
+				$model  = Mage::getModel('conshiymaster/queue');
+				if (!$model_id) {
+					$model->setSlaveId($slave->getId());
+					$model->setUpdatedAt(now());
+					$model->setResourceModel($this->getMageResourceCode());
+					$model->setResourceIdentifier($identifier);
+				} else {
+					$model->load($model_id);
+					$model->setUpdatedAt(now());
+				}
+			
+				$model->save();
+		
+			}
+		}
 	}
 }

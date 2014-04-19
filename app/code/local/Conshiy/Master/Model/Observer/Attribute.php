@@ -19,36 +19,19 @@
  */
 class Conshiy_Master_Model_Observer_Attribute extends Conshiy_Master_Model_Observer_Abstract
 {	
-	protected $_conshiy_resource_code = 'catalog_product_attribute';
-	protected $_mage_resource_code = 'catalog_entity_attribute';
 	
-	public function queue($observer){
-		
-		$identifier = $observer->getEvent()->getAttribute()->getData('attribute_code');
-		
-		$network  = Mage::getModel('conshiymaster/network')->getCollection();		
-		foreach ($network as $slave){
-			if( isset($slave['resources']) && 
-					in_array($this->_conshiy_resource_code, explode(',', $slave['resources']))){
-							
-				$model_id = Mage::getModel('conshiymaster/queue')->getUniqueQueue($this->_mage_resource_code, 
-						$identifier,
-						$slave->getId()
-					);
-				$model  = Mage::getModel('conshiymaster/queue');
-				if (!$model_id) {			
-					$model->setSlaveId($slave->getId());
-					$model->setUpdatedAt(now());
-					$model->setResourceModel($this->_mage_resource_code);
-					$model->setResourceIdentifier($identifier);
-				} else {
-					$model->load($model_id);
-					$model->setUpdatedAt(now());
-				}		
-			
-				$model->save();
-			
-			}
-		}
+	public function getConshiyResourceCode(){
+		return 'catalog_product_attribute';
 	}
+	
+	public function getMageResourceCode(){
+		return 'catalog_entity_attribute';
+	}
+	
+	public function getIdentifier($observer){
+		$identifier = $observer->getEvent()->getAttribute()->getData('attribute_code');
+		return $identifier;
+	}
+	
+	
 }

@@ -109,14 +109,14 @@
     <conshiy>
     	<enities>
     		<catalog_product>
-    			<enabled>0</enabled>
+    			<enabled>1</enabled>
     			<label>Products</label>
     			<catalog_category>
-    				<enabled>0</enabled>
+    				<enabled>1</enabled>
     				<label>Categories</label>
     			</catalog_category>
     			<catalog_product_attribute_set>
-    				<enabled>0</enabled>
+    				<enabled>1</enabled>
     				<label>Attribute Sets</label>
     				<catalog_product_attribute>
     					<enabled>1</enabled>

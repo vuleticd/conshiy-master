@@ -64,22 +64,10 @@ class Conshiy_Master_Block_Adminhtml_Network_Grid extends Mage_Adminhtml_Block_W
 				'url'      => $this->getUrl('*/*/massDelete'),
 				'confirm'  => Mage::helper('conshiymaster')->__('Are you sure?')
 		));
-	
-		$resources = array(
-            ''	=> ''
-        );
-		foreach(Mage::getConfig()->getNode('conshiy/enities')->children() as $ch){
-			if($ch->getName() != 'enabled' && $ch->getName() != 'label'){
-				$result = $ch->xpath('.//label');
-				foreach($result as $lab){
-					$parent = $lab->xpath('..');
-					if(( (string) $parent[0]->enabled )){
-						$resources[$parent[0]->getName()] = (string) $parent[0]->label;
-					}
-				}
-			}
-		}
-
+		
+		$resources = Mage::helper('conshiymaster')->getResourcesOptionArray();
+		array_unshift($resources, array('label'=>'', 'value'=>''));
+		
 		$this->getMassactionBlock()->addItem('sync', array(
 				'label'=> Mage::helper('conshiymaster')->__('Synchronize'),
 				'url'  => $this->getUrl('*/*/massSync', array('_current'=>true)),
