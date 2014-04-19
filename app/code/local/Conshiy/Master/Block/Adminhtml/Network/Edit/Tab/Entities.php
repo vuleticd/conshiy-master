@@ -19,12 +19,6 @@
  */
 class Conshiy_Master_Block_Adminhtml_Network_Edit_Tab_Entities extends Mage_Adminhtml_Block_Widget_Form
 {
-	
-	/*public function __construct()
-    {
-        parent::__construct();
-        $this->setTemplate('conshiy/entities/tree.phtml');
-    }*/
     
 	protected function _prepareForm()
 	{
@@ -37,40 +31,48 @@ class Conshiy_Master_Block_Adminhtml_Network_Edit_Tab_Entities extends Mage_Admi
 				'text'     => $this->__('These entities will be monitored for changes on Master and notifications will be sent to this Slave.'),
 		));
 		
-		$this->walkEntities(Mage::getConfig()->getNode('conshiy/enities')->children(), $fieldset);
-		
-			/*
 		if ( Mage::getSingleton('adminhtml/session')->getNetworkData() )
 		{
-			$form->setValues(Mage::getSingleton('adminhtml/session')->getNetworkData());
+			$data = Mage::getSingleton('adminhtml/session')->getNetworkData();
 			Mage::getSingleton('adminhtml/session')->setNetworkData(null);
 		} elseif ( Mage::registry('network_data') ) {
-			$form->setValues(Mage::registry('network_data')->getData());
+			$data = Mage::registry('network_data')->getData();
 		}
-		*/
+		
+		$this->walkEntities(Mage::getConfig()->getNode('conshiy/enities')->children(), $fieldset, $data);
+		
 		return parent::_prepareForm();
 	}
 	
 	
-	public function walkEntities($entities, $fieldset, $level = 0)
+	public function walkEntities($entities, $fieldset, $data = array(), $level = 0)
 	{
 		foreach ( $entities as $k=>$e){
+			$selected = false;
 			if($e->getName() != 'enabled' && $e->getName() != 'label'){
-				$this->renderField($e, $fieldset, $level);
+				
+				if( isset($data['resources']) && in_array($e->getName(), explode(',', $data['resources']))){
+					$selected = true;
+				}
+				
+				$this->renderField($e, $fieldset, $level, $selected);
 				
 			}
 			
 			if($e->count() > 2) {
 				$level++;
-				$this->walkEntities($e->children(), $fieldset, $level );
+				$this->walkEntities($e->children(), $fieldset, $data, $level );
 			}
 
 		}
 		
 	}
 	
-	public function renderField($entity, $fieldset, $level)
+	public function renderField($entity, $fieldset, $level, $selected)
 	{
+		// present only globaly allowed resources
+		if(!((string) $entity->enabled)) return;
+		
 		$depends = '';
 		if($this->depending($entity)){
 			$depends = implode(",",$this->depending($entity));
@@ -80,7 +82,7 @@ class Conshiy_Master_Block_Adminhtml_Network_Edit_Tab_Entities extends Mage_Admi
 		$fieldset->addField($entity->getName(), 'checkbox', array(
 					'label'     => $entity->label,
 					'name'      => "entities[".$entity->getName()."]",
-					'checked' => false,
+					'checked' => ( $selected ? true : false ),
 					'onclick' => "",
 					'onchange' => ($depends ? "toggleEntities('" . $depends . "', this.checked)" : ""),
 					'value'  => 1,

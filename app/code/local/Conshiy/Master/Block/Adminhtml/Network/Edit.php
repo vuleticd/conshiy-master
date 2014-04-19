@@ -45,7 +45,9 @@ class Conshiy_Master_Block_Adminhtml_Network_Edit extends Mage_Adminhtml_Block_W
 				var spl = children.split(',');
 				for (var index = 0, len = spl.length; index < len; ++index) {
   					var item = spl[index];
-  					$(item).checked = checked;
+					if($(item)) {
+  						$(item).checked = checked;
+					}
 				}				
             }
         ";

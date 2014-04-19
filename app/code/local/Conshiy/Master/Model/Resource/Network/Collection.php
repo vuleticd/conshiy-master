@@ -27,4 +27,5 @@ class Conshiy_Master_Model_Resource_Network_Collection extends Mage_Core_Model_R
     {
         $this->_init('conshiymaster/network');
     }
+    
 }

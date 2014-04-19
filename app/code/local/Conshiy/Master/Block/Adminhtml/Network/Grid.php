@@ -65,6 +65,35 @@ class Conshiy_Master_Block_Adminhtml_Network_Grid extends Mage_Adminhtml_Block_W
 				'confirm'  => Mage::helper('conshiymaster')->__('Are you sure?')
 		));
 	
+		$resources = array(
+            ''	=> ''
+        );
+		foreach(Mage::getConfig()->getNode('conshiy/enities')->children() as $ch){
+			if($ch->getName() != 'enabled' && $ch->getName() != 'label'){
+				$result = $ch->xpath('.//label');
+				foreach($result as $lab){
+					$parent = $lab->xpath('..');
+					if(( (string) $parent[0]->enabled )){
+						$resources[$parent[0]->getName()] = (string) $parent[0]->label;
+					}
+				}
+			}
+		}
+
+		$this->getMassactionBlock()->addItem('sync', array(
+				'label'=> Mage::helper('conshiymaster')->__('Synchronize'),
+				'url'  => $this->getUrl('*/*/massSync', array('_current'=>true)),
+				'additional' => array(
+						'visibility' => array(
+								'name' => 'sync',
+								'type' => 'select',
+								'class' => 'required-entry',
+								'label' => Mage::helper('conshiymaster')->__('Resource'),
+								'values' => $resources
+						)
+				)
+		));
+		
 		return $this;
 	}
 	

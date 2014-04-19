@@ -65,7 +65,13 @@ class Conshiy_Master_Adminhtml_NetworkController extends Mage_Adminhtml_Controll
 	
 	public function saveAction() {
 		if ($data = $this->getRequest()->getPost()) {
-			//Mage::log(array_keys($data['entities']));
+			// prepare resources data
+			$data['resources'] = '';
+			if(isset($data['entities']) && is_array($data['entities'])){
+				$data['resources'] = implode(',',array_keys($data['entities']));
+			}
+			unset($data['entities']);
+			
 			$model = Mage::getModel('conshiymaster/network');
 			$model->setData($data)
 				->setId($this->getRequest()->getParam('id'));
@@ -158,6 +164,62 @@ class Conshiy_Master_Adminhtml_NetworkController extends Mage_Adminhtml_Controll
 			}
 		}
 		$this->_redirect('*/*/index');
+	}
+	
+	public function massSyncAction() {
+		$ids = $this->getRequest()->getParam('network');
+		$resource     = (string)$this->getRequest()->getParam('sync');
+		
+		if(!is_array($ids)) {
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select item(s)'));
+		} else {
+			try {
+				foreach ($ids as $id) {
+					$slave = Mage::getModel('conshiymaster/network')->load($id);
+					if( isset($slave['resources']) && 
+					in_array($resource, explode(',', $slave['resources']))){
+						switch ($resource){
+							case 'catalog_product_attribute':
+								$collection = Mage::getResourceModel('catalog/product_attribute_collection');
+								$resource_model = 'catalog_entity_attribute';
+								foreach ($collection as $productAttr) {
+									$this->_saveQueue($resource_model, $productAttr->getAttributeCode(), $slave->getId());
+								}
+								break;
+						}
+						
+						
+					}
+				}
+				Mage::getSingleton('adminhtml/session')->addSuccess(
+					Mage::helper('adminhtml')->__(
+					'Total of %d record(s) were successfully deleted', count($ids)
+					)
+				);
+			} catch (Exception $e) {
+				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+			}
+		}
+		$this->_redirect('*/*/index');
+	}
+	
+	private function _saveQueue($resource, $identifier, $slave_id){
+		$model_id = Mage::getModel('conshiymaster/queue')->getUniqueQueue($resource,
+				$identifier,
+				$slave_id
+		);
+		$model  = Mage::getModel('conshiymaster/queue');
+		if (!$model_id) {
+			$model->setSlaveId($slave_id);
+			$model->setUpdatedAt(now());
+			$model->setResourceModel($resource);
+			$model->setResourceIdentifier($identifier);
+		} else {
+			$model->load($model_id);
+			$model->setUpdatedAt(now());
+		}
+		
+		$model->save();
 	}
 	
 }

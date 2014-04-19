@@ -17,11 +17,17 @@
  * @copyright   Copyright (c) 2014 a356 Development (http://www.a356dev.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Conshiy_Master_Model_Observer_Abstract
-{
+$installer  = $this;
+$installer->startSetup();
 
-	
-	public function queue($observer){
-		Mage::log($observer->getEvent()->getName());
-	}
-}
+$installer->getConnection()
+	->addColumn($installer->getTable('conshiymaster/network'),
+		'resources',
+		array(
+				'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+				'nullable' => false,
+				'default' => '',
+				'comment' => 'Enabled Resources'
+		)
+);
+$installer->endSetup();
